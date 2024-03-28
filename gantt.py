@@ -43,7 +43,7 @@ def create_fcfs_gantt(processes):
     :param processes:
     :return:
     '''
-    processes.sort(lambda x: x.arrival_time)
+    processes.sort(key=lambda x: x.arrival_time)
     curr_time = 0
     gantt_chart = []
 
@@ -61,7 +61,7 @@ def create_srtf_gantt(processes):
     :param processes:
     :return:
     '''
-    processes.sort(lambda x: x.arrival_time)
+    processes.sort(key=lambda x: x.arrival_time)
     pass
 
 def create_round_robin_gantt(processes):
@@ -75,7 +75,10 @@ def create_round_robin_gantt(processes):
     pass
 
 
-fcfs_gantt = create_fcfs_gantt(generate_processes())
 
+##################################################################
+# FCFS
+##################################################################
+fcfs_gantt = create_fcfs_gantt(generate_processes())
 for process_id, start_time, end_time in fcfs_gantt:
-    print(f"Process {process_id}: Start Time: {start_time}, End Time: {end_time}")
+    print(f"Process {process_id}, Start Time: {start_time}, End Time: {end_time}")
