@@ -36,7 +36,7 @@ def generate_processes():
     return processes
 
 
-def fcfs_gantt(processes):
+def create_fcfs_gantt(processes):
     '''
     Creates gantt chart with first-come, first-served algorithm
 
@@ -48,8 +48,13 @@ def fcfs_gantt(processes):
     gantt_chart = []
 
     for process in processes:
+        start_time = max(curr_time, process.arrival_time)
+        end_time = start_time + process.burst
+        gantt_chart.append((process.id, start_time, end_time))
+        curr_time = end_time
+    return gantt_chart
 
-def srtf_gantt(processes):
+def create_srtf_gantt(processes):
     '''
     Creates gantt chart with first-come, first-served algorithm
 
@@ -59,7 +64,7 @@ def srtf_gantt(processes):
     processes.sort(lambda x: x.arrival_time)
     pass
 
-def round_robin_gantt(processes):
+def create_round_robin_gantt(processes):
     '''
     Creates gantt chart with first-come, first-served algorithm
 
@@ -68,3 +73,9 @@ def round_robin_gantt(processes):
     '''
     processes.sort(lambda x: x.arrival_time)
     pass
+
+
+fcfs_gantt = create_fcfs_gantt(generate_processes())
+
+for process_id, start_time, end_time in fcfs_gantt:
+    print(f"Process {process_id}: Start Time: {start_time}, End Time: {end_time}")
