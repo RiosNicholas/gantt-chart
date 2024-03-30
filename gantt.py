@@ -38,10 +38,10 @@ def generate_processes():
 
 def create_fcfs_gantt(processes):
     '''
-    Creates gantt chart with first-come, first-served algorithm
+    Creates gantt chart with first-come, first-served scheduling algorithm
 
-    :param processes:
-    :return:
+    :param processes: A list of Process objects representing the processes to be scheduled.
+    :return: A list of tuples containing the process id, process arrival_time, process schedule start_time, and process schedule end_time.
     '''
     processes.sort(key=lambda x: x.arrival_time)
     curr_time = 0
@@ -56,20 +56,20 @@ def create_fcfs_gantt(processes):
 
 def create_srtf_gantt(processes):
     '''
-    Creates gantt chart with first-come, first-served algorithm
+    Creates gantt chart with shortest-remaining time first scheduling algorithm
 
-    :param processes:
-    :return:
+    :param processes: A list of Process objects representing the processes to be scheduled.
+    :return: A list of tuples containing the process id, process arrival_time, process schedule start_time, and process schedule end_time.
     '''
     processes.sort(key=lambda x: x.arrival_time)
     pass
 
 def create_round_robin_gantt(processes):
     '''
-    Creates gantt chart with first-come, first-served algorithm
+    Creates gantt chart with the round robin scheduling algorithm
 
-    :param processes:
-    :return:
+    :param processes: A list of Process objects representing the processes to be scheduled.
+    :return: A list of tuples containing the process id, process arrival_time, process schedule start_time, and process schedule end_time.
     '''
     processes.sort(lambda x: x.arrival_time)
     pass
@@ -89,3 +89,7 @@ for process_id, start_time, end_time, arrival_time in fcfs_gantt:
     print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} |")
 
 print("************************************")
+
+##################################################################
+# SRTF
+##################################################################
