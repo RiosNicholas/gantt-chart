@@ -84,12 +84,40 @@ print("       FCFS GANTT CHART")
 print("| Process | Arrival | Start | End  |")
 print("------------------------------------")
 
-# Printing the main gantt chart information
+# Printing the fcfs gantt chart data
 for process_id, start_time, end_time, arrival_time in fcfs_gantt:
     print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} |")
 
-print("************************************")
+print("************************************\n")
+
+
 
 ##################################################################
 # SRTF
 ##################################################################
+srtf_gantt = create_srtf_gantt(generate_processes())
+print("       SRTF GANTT CHART")
+print("| Process | Arrival | Start | End  |")
+print("------------------------------------")
+
+# Printing the srtf gantt chart data
+for process_id, start_time, end_time, arrival_time in fcfs_gantt:
+    print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} |")
+
+print("************************************\n")
+
+
+
+##################################################################
+# ROUND ROBIN
+##################################################################
+round_robin_gantt = create_round_robin_gantt(generate_processes())
+print("       ROUND ROBIN GANTT CHART")
+print("| Process | Arrival | Start | End  |")
+print("------------------------------------\n")
+
+# Printing the round robin gantt chart data
+for process_id, start_time, end_time, arrival_time in fcfs_gantt:
+    print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} |")
+
+print("************************************")
