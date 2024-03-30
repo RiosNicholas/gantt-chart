@@ -50,7 +50,7 @@ def create_fcfs_gantt(processes):
     for process in processes:
         start_time = max(curr_time, process.arrival_time)
         end_time = start_time + process.burst
-        gantt_chart.append((process.id, start_time, end_time))
+        gantt_chart.append((process.id, start_time, end_time, process.arrival_time))
         curr_time = end_time
     return gantt_chart
 
@@ -80,5 +80,12 @@ def create_round_robin_gantt(processes):
 # FCFS
 ##################################################################
 fcfs_gantt = create_fcfs_gantt(generate_processes())
-for process_id, start_time, end_time in fcfs_gantt:
-    print(f"Process {process_id}, Start Time: {start_time}, End Time: {end_time}")
+print("       FCFS GANTT CHART")
+print("| Process | Arrival | Start | End  |")
+print("------------------------------------")
+
+# Printing the main gantt chart information
+for process_id, start_time, end_time, arrival_time in fcfs_gantt:
+    print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} |")
+
+print("************************************")
