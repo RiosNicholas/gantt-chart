@@ -72,6 +72,7 @@ def create_srtf_gantt(processes):
     curr_time = 0
     remaining_processes = list(processes)
 
+    #FIXME: remove single increments in output where not necessary. end time should only change when a process completes or if a shorter remaining time process arrives
     while remaining_processes:
         available_processes = [process for process in remaining_processes if process.arrival_time <= curr_time]
 
