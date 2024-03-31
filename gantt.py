@@ -114,7 +114,7 @@ print("------------------------------------")
 for process_id, start_time, end_time, arrival_time in fcfs_gantt:
     print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} |")
 
-print("************************************\n")
+print("***************************************************\n")
 
 
 
@@ -131,7 +131,7 @@ print("------------------------------------")
 for process_id, start_time, end_time, arrival_time in srtf_gantt:
     print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} |")
 
-print("************************************\n")
+print("***************************************************\n")
 
 
 
@@ -148,4 +148,4 @@ for process_id, start_time, end_time, arrival_time, burst in round_robin_gantt:
     print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<10} |")
 
 
-print("************************************")
+print("***************************************************\n")
