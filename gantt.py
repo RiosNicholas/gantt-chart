@@ -129,7 +129,7 @@ print("                FCFS GANTT CHART")
 print("| Process | Arrival | Start | End  |  Rem. Burst  |")
 print("---------------------------------------------------")
 
-# Printing the fcfs gantt chart data
+# Printing the FCFS gantt chart data
 for process_id, start_time, end_time, arrival_time, burst in fcfs_gantt:
     print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<12} |")
 print("---------------------------------------------------")
@@ -208,12 +208,13 @@ def create_srtf_gantt(processes):
 srtf_gantt = create_srtf_gantt(generate_processes())
 
 print("                SRTF GANTT CHART")
-print("| Process | Arrival | Start | End  | Rem. Burst |")
-print("-------------------------------------------------")
+print("| Process | Arrival | Start | End  |  Rem. Burst  |")
+print("---------------------------------------------------")
 
 # Printing the SRTF gantt chart data
 for process_id, start_time, end_time, arrival_time, burst in srtf_gantt:
-    print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<10} |")
+    print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<12} |")
+print("---------------------------------------------------")
 
 # Calculating wait time and turnaround time for SRTF
 srtf_wait_time = calculate_avg_wait_time(srtf_gantt)
@@ -223,7 +224,7 @@ srtf_turnaround_time = calculate_avg_turnaround_time(srtf_gantt)
 sorted_srtf_wait_time = dict(sorted(srtf_wait_time.items()))
 sorted_srtf_turnaround_time = dict(sorted(srtf_turnaround_time.items()))
 
-# Printing wait time and turnaround time for FCFS
+# Printing wait time and turnaround time for SRTF
 print("| Process | Avg. Wait Time | Avg. Turnaround Time |")
 print("---------------------------------------------------")
 for process_id in srtf_wait_time.keys():
@@ -274,12 +275,12 @@ def create_round_robin_gantt(processes):
 # Generating a gantt chart for output
 round_robin_gantt = create_round_robin_gantt(generate_processes())
 print("              ROUND ROBIN GANTT CHART")
-print("| Process | Arrival | Start | End  | Rem. Burst |")
-print("-------------------------------------------------")
+print("| Process | Arrival | Start | End  |  Rem. Burst  |")
+print("---------------------------------------------------")
 
-# Printing the round robin gantt chart data
+# Printing the Round Robin gantt chart data
 for process_id, start_time, end_time, arrival_time, burst in round_robin_gantt:
-    print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<10} |")
+    print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<12} |")
 print("---------------------------------------------------")
 
 # Calculating wait time and turnaround time for Round Robin
