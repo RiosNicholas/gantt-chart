@@ -33,9 +33,14 @@ def generate_processes():
     processes = []
     for i in range(10):
         processes.append(Process(i + 1, random.randint(0,11)))
+
     return processes
 
 
+
+####################################################################################################################################
+# FCFS
+####################################################################################################################################
 def create_fcfs_gantt(processes):
     '''
     Creates gantt chart with first-come, first-served scheduling algorithm
@@ -59,6 +64,23 @@ def create_fcfs_gantt(processes):
 
     return gantt_chart
 
+
+# Generating a gantt chart for output
+fcfs_gantt = create_fcfs_gantt(generate_processes())
+print("                FCFS GANTT CHART")
+print("| Process | Arrival | Start | End  | Rem. Burst |")
+print("-------------------------------------------------")
+
+# Printing the fcfs gantt chart data
+for process_id, start_time, end_time, arrival_time, burst in fcfs_gantt:
+    print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<10} |")
+print("***************************************************\n")
+
+
+
+####################################################################################################################################
+# SRTF
+####################################################################################################################################
 def create_srtf_gantt(processes):
     '''
     Creates gantt chart with shortest-remaining time first scheduling algorithm
@@ -94,7 +116,6 @@ def create_srtf_gantt(processes):
             # If the current shortest_process.id is different from the last one, append the new process to the Gantt chart
             gantt_chart.append((shortest_process.id, start_time, end_time, shortest_process.arrival_time, remaining_burst))
 
-
         # Updating the current time and remaining burst time of the currently shortest process
         curr_time = end_time
         if remaining_burst == 0:
@@ -106,7 +127,24 @@ def create_srtf_gantt(processes):
 
     return gantt_chart 
 
-   
+
+# Generating a gantt chart for output
+srtf_gantt = create_srtf_gantt(generate_processes())
+
+print("                SRTF GANTT CHART")
+print("| Process | Arrival | Start | End  | Rem. Burst |")
+print("-------------------------------------------------")
+
+# Printing the srtf gantt chart data
+for process_id, start_time, end_time, arrival_time, burst in srtf_gantt:
+    print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<10} |")
+print("***************************************************\n")
+
+
+
+####################################################################################################################################
+# ROUND ROBIN
+####################################################################################################################################
 def create_round_robin_gantt(processes):
     '''
     Creates gantt chart with the round robin scheduling algorithm
@@ -142,43 +180,7 @@ def create_round_robin_gantt(processes):
     return gantt_chart
 
 
-
-##################################################################
-# FCFS
-##################################################################
-fcfs_gantt = create_fcfs_gantt(generate_processes())
-print("                FCFS GANTT CHART")
-print("| Process | Arrival | Start | End  | Rem. Burst |")
-print("-------------------------------------------------")
-
-# Printing the fcfs gantt chart data
-for process_id, start_time, end_time, arrival_time, burst in fcfs_gantt:
-    print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<10} |")
-
-print("***************************************************\n")
-
-
-
-##################################################################
-# SRTF
-##################################################################
-srtf_gantt = create_srtf_gantt(generate_processes())
-
-print("                SRTF GANTT CHART")
-print("| Process | Arrival | Start | End  | Rem. Burst |")
-print("-------------------------------------------------")
-
-# Printing the srtf gantt chart data
-for process_id, start_time, end_time, arrival_time, burst in srtf_gantt:
-    print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<10} |")
-
-print("***************************************************\n")
-
-
-
-##################################################################
-# ROUND ROBIN
-##################################################################
+# Generating a gantt chart for output
 round_robin_gantt = create_round_robin_gantt(generate_processes())
 print("              ROUND ROBIN GANTT CHART")
 print("| Process | Arrival | Start | End  | Rem. Burst |")
@@ -187,6 +189,4 @@ print("-------------------------------------------------")
 # Printing the round robin gantt chart data
 for process_id, start_time, end_time, arrival_time, burst in round_robin_gantt:
     print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<10} |")
-
-
 print("***************************************************\n")
