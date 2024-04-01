@@ -28,7 +28,7 @@ def generate_processes():
     '''
     Generates 10 processes with arrival times between 0 and 11
 
-    :return:  list of processes with incremented id, random arrival_time between 0-11, and randomized burst between 1-30
+    :return: A list of processes with incremented id, random arrival_time between 0-11, and randomized burst between 1-30
     '''
     processes = []
     for i in range(10):
@@ -37,15 +37,73 @@ def generate_processes():
     return processes
 
 
+def calculate_avg_wait_time(gantt_chart):
+    '''
+    Calculates the average turnaround time for each process in a gantt chart
 
-####################################################################################################################################
+    :param gantt_chart: A list of 10 tuples containing the process id, process arrival time, start time, end time, and remaining burst time.
+    :return: A dictionary where keys are process_ids, and values are integers representing the the floor of the total wait time for a given process_id divided by 10
+    '''
+    # wait_time = {}
+    # for i in range(len(gantt_chart)):
+    #     process_id, start_time, _, arrival_time, _ = gantt_chart[i]
+    #     wait_time[process_id] = max(start_time - arrival_time, 0) 
+    # return wait_time
+    wait_time = {}
+    total_wait_time = {}
+    count = {}
+
+    for i in range(10):
+        process_id, start_time, _, arrival_time, _ = gantt_chart[i]
+        wait_time[process_id] = max(start_time - arrival_time, 0)
+        total_wait_time[process_id] = wait_time.get(process_id, 0) + wait_time[process_id]
+        count[process_id] = count.get(process_id, 0) + 1
+
+    avg_wait_time = {}
+    for process_id in total_wait_time:
+        avg_wait_time[process_id] = total_wait_time[process_id] // count[process_id]
+
+    return avg_wait_time
+  
+
+def calculate_avg_turnaround_time(gantt_chart):
+    '''
+    Calculates the average waiting time for each process in a gantt chart
+
+    :param gantt_chart: A list of 10 tuples containing the process id, process arrival time, start time, end time, and remaining burst time.
+    :return: A dictionary where keys are process_ids, and values are integers representing the the floor of the total turnaround time for a given process_id divided by 10
+    '''
+    # turnaround_time = {}
+    # for i in range(len(gantt_chart)):
+        # process_id, start_time, end_time, _, _ = gantt_chart[i]
+        # turnaround_time[process_id] = end_time - start_time
+    # return turnaround_time
+    turnaround_time = {}
+    total_turnaround_time = {}
+    count = {}
+
+    for i in range(10):
+        process_id, start_time, end_time, _, _ = gantt_chart[i]
+        turnaround_time[process_id] = end_time - start_time
+        total_turnaround_time[process_id] = turnaround_time.get(process_id, 0) + turnaround_time[process_id]
+        count[process_id] = count.get(process_id, 0) + 1
+
+    avg_turnaround_time = {}
+    for process_id in total_turnaround_time:
+        avg_turnaround_time[process_id] = total_turnaround_time[process_id] // count[process_id]
+
+    return avg_turnaround_time
+    
+
+
+###############################################################
 # FCFS
-####################################################################################################################################
+###############################################################
 def create_fcfs_gantt(processes):
     '''
     Creates gantt chart with first-come, first-served scheduling algorithm
 
-    :param processes: A list of Process objects representing the processes to be scheduled.
+    :param processes: A list of Process objects representing the processes to be scheduled
     :return: A list of tuples containing the process id, process arrival_time, process schedule start_time, and process schedule end_time.
     '''
     processes.sort(key=lambda x: x.arrival_time)
@@ -68,24 +126,42 @@ def create_fcfs_gantt(processes):
 # Generating a gantt chart for output
 fcfs_gantt = create_fcfs_gantt(generate_processes())
 print("                FCFS GANTT CHART")
-print("| Process | Arrival | Start | End  | Rem. Burst |")
-print("-------------------------------------------------")
+print("| Process | Arrival | Start | End  |  Rem. Burst  |")
+print("---------------------------------------------------")
 
 # Printing the fcfs gantt chart data
 for process_id, start_time, end_time, arrival_time, burst in fcfs_gantt:
-    print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<10} |")
+    print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<12} |")
+print("---------------------------------------------------")
+
+# Calculating wait time and turnaround time for FCFS
+fcfs_wait_time = calculate_avg_wait_time(fcfs_gantt)
+fcfs_turnaround_time = calculate_avg_turnaround_time(fcfs_gantt)
+
+# Sorting the wait time and turnaround time dictionaries by process ID
+sorted_fcfs_wait_time = dict(sorted(fcfs_wait_time.items()))
+sorted_fcfs_turnaround_time = dict(sorted(fcfs_turnaround_time.items()))
+
+# Printing wait time and turnaround time for FCFS
+print("| Process | Avg. Wait Time | Avg. Turnaround Time |")
+print("---------------------------------------------------")
+for process_id in fcfs_wait_time.keys():
+    wait = fcfs_wait_time[process_id]
+    turnaround = fcfs_turnaround_time[process_id]
+    print(f"| P{process_id:<6} | {wait:<11} ms | {turnaround:<17} ms |")
+
 print("***************************************************\n")
 
 
 
-####################################################################################################################################
+###############################################################
 # SRTF
-####################################################################################################################################
+###############################################################
 def create_srtf_gantt(processes):
     '''
     Creates gantt chart with shortest-remaining time first scheduling algorithm
 
-    :param processes: A list of Process objects representing the processes to be scheduled.
+    :param processes: A list of Process objects representing the processes to be scheduled
     :return: A list of tuples containing the process id, process arrival_time, process schedule start_time, process schedule end_time, and remaining burst time.
     '''
     processes.sort(key=lambda x: x.arrival_time)
@@ -135,21 +211,36 @@ print("                SRTF GANTT CHART")
 print("| Process | Arrival | Start | End  | Rem. Burst |")
 print("-------------------------------------------------")
 
-# Printing the srtf gantt chart data
+# Printing the SRTF gantt chart data
 for process_id, start_time, end_time, arrival_time, burst in srtf_gantt:
     print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<10} |")
+
+# Calculating wait time and turnaround time for SRTF
+srtf_wait_time = calculate_avg_wait_time(srtf_gantt)
+srtf_turnaround_time = calculate_avg_turnaround_time(srtf_gantt)
+
+# Sorting the wait time and turnaround time dictionaries by process ID
+sorted_srtf_wait_time = dict(sorted(srtf_wait_time.items()))
+sorted_srtf_turnaround_time = dict(sorted(srtf_turnaround_time.items()))
+
+# Printing wait time and turnaround time for FCFS
+print("| Process | Avg. Wait Time | Avg. Turnaround Time |")
+print("---------------------------------------------------")
+for process_id in srtf_wait_time.keys():
+    wait = srtf_wait_time[process_id]
+    turnaround = srtf_turnaround_time[process_id]
+    print(f"| P{process_id:<6} | {wait:<11} ms | {turnaround:<17} ms |")
+
 print("***************************************************\n")
 
-
-
-####################################################################################################################################
+###############################################################
 # ROUND ROBIN
-####################################################################################################################################
+###############################################################
 def create_round_robin_gantt(processes):
     '''
     Creates gantt chart with the round robin scheduling algorithm
 
-    :param processes: A list of Process objects representing the processes to be scheduled.
+    :param processes: A list of Process objects representing the processes to be scheduled
     :return: A list of tuples containing the process id, process arrival_time, process schedule start_time, and process schedule end_time.
     '''
     processes.sort(key=lambda x: x.arrival_time)
@@ -189,4 +280,22 @@ print("-------------------------------------------------")
 # Printing the round robin gantt chart data
 for process_id, start_time, end_time, arrival_time, burst in round_robin_gantt:
     print(f"|   P{process_id:<3}  |    {arrival_time:<4} | {start_time:<5} | {end_time:<4} | {burst:<10} |")
+print("---------------------------------------------------")
+
+# Calculating wait time and turnaround time for Round Robin
+rr_wait_time = calculate_avg_wait_time(round_robin_gantt)
+rr_turnaround_time = calculate_avg_turnaround_time(round_robin_gantt)
+
+# Sorting the wait time and turnaround time dictionaries by process ID
+sorted_rr_wait_time = dict(sorted(rr_wait_time.items()))
+sorted_rr_turnaround_time = dict(sorted(rr_turnaround_time.items()))
+
+# Printing wait time and turnaround time for FCFS
+print("| Process | Avg. Wait Time | Avg. Turnaround Time |")
+print("---------------------------------------------------")
+for process_id in srtf_wait_time.keys():
+    wait = rr_wait_time[process_id]
+    turnaround = rr_turnaround_time[process_id]
+    print(f"| P{process_id:<6} | {wait:<11} ms | {turnaround:<17} ms |")
+
 print("***************************************************\n")
