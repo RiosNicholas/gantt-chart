@@ -37,63 +37,55 @@ def generate_processes():
     return processes
 
 
-def calculate_avg_wait_time(gantt_chart):
+def calculate_wait_time(gantt_chart):
     '''
-    Calculates the average turnaround time for each process in a gantt chart
+    Calculates the turnaround time for each process in a gantt chart
 
     :param gantt_chart: A list of 10 tuples containing the process id, process arrival time, start time, end time, and remaining burst time.
-    :return: A dictionary where keys are process_ids, and values are integers representing the the floor of the total wait time for a given process_id divided by 10
+    :return: A dictionary where keys are process_ids, and values are integers representing the wait time for a given process_id
     '''
-    # wait_time = {}
-    # for i in range(len(gantt_chart)):
-    #     process_id, start_time, _, arrival_time, _ = gantt_chart[i]
-    #     wait_time[process_id] = max(start_time - arrival_time, 0) 
-    # return wait_time
     wait_time = {}
-    total_wait_time = {}
-    count = {}
-
-    for i in range(10):
+    for i in range(len(gantt_chart)):
         process_id, start_time, _, arrival_time, _ = gantt_chart[i]
-        wait_time[process_id] = max(start_time - arrival_time, 0)
-        total_wait_time[process_id] = wait_time.get(process_id, 0) + wait_time[process_id]
-        count[process_id] = count.get(process_id, 0) + 1
+        wait_time[process_id] = max(start_time - arrival_time, 0) 
+    return wait_time
 
-    avg_wait_time = {}
-    for process_id in total_wait_time:
-        avg_wait_time[process_id] = total_wait_time[process_id] // count[process_id]
 
-    return avg_wait_time
-  
+def calculate_turnaround_time(gantt_chart):
+    '''
+    Calculates the waiting time for each process in a given gantt chart
+
+    :param gantt_chart: A list of 10 tuples containing the process id, process arrival time, start time, end time, and remaining burst time.
+    :return: A dictionary where keys are process_ids, and values are integers representing the turnaround time for a given process_id 
+    '''
+    turnaround_time = {}
+    for i in range(len(gantt_chart)):
+        process_id, start_time, end_time, _, _ = gantt_chart[i]
+        turnaround_time[process_id] = end_time - start_time
+    return turnaround_time
+    
+
+def calculate_avg_wait_time(gantt_chart):
+    '''
+    Calculates the average wait time for a given gantt chart
+
+    :param gantt_chart: A list of 10 tuples containing the process id, process arrival time, start time, end time, and remaining burst time
+    :return: The average wait time of the gantt chart as an integer
+    '''
+    total_wait_time = sum(max(start_time - arrival_time, 0) for _, start_time, _, arrival_time, _ in gantt_chart)
+    return total_wait_time // 10
+
 
 def calculate_avg_turnaround_time(gantt_chart):
     '''
-    Calculates the average waiting time for each process in a gantt chart
+    Calculates the average turnaround time for a given gantt chart
 
-    :param gantt_chart: A list of 10 tuples containing the process id, process arrival time, start time, end time, and remaining burst time.
-    :return: A dictionary where keys are process_ids, and values are integers representing the the floor of the total turnaround time for a given process_id divided by 10
+    :param gantt_chart: A list of 10 tuples containing the process id, process arrival time, start time, end time, and remaining burst time
+    :return: The average turnaround time of the gantt chart as an integer
     '''
-    # turnaround_time = {}
-    # for i in range(len(gantt_chart)):
-        # process_id, start_time, end_time, _, _ = gantt_chart[i]
-        # turnaround_time[process_id] = end_time - start_time
-    # return turnaround_time
-    turnaround_time = {}
-    total_turnaround_time = {}
-    count = {}
+    total_turnaround_time = sum(end_time - start_time for _, start_time, end_time, _, _ in gantt_chart)
+    return total_turnaround_time // 10
 
-    for i in range(10):
-        process_id, start_time, end_time, _, _ = gantt_chart[i]
-        turnaround_time[process_id] = end_time - start_time
-        total_turnaround_time[process_id] = turnaround_time.get(process_id, 0) + turnaround_time[process_id]
-        count[process_id] = count.get(process_id, 0) + 1
-
-    avg_turnaround_time = {}
-    for process_id in total_turnaround_time:
-        avg_turnaround_time[process_id] = total_turnaround_time[process_id] // count[process_id]
-
-    return avg_turnaround_time
-    
 
 
 ###############################################################
@@ -135,20 +127,25 @@ for process_id, start_time, end_time, arrival_time, burst in fcfs_gantt:
 print("---------------------------------------------------")
 
 # Calculating wait time and turnaround time for FCFS
-fcfs_wait_time = calculate_avg_wait_time(fcfs_gantt)
-fcfs_turnaround_time = calculate_avg_turnaround_time(fcfs_gantt)
+fcfs_wait_time = calculate_wait_time(fcfs_gantt)
+fcfs_turnaround_time = calculate_turnaround_time(fcfs_gantt)
 
 # Sorting the wait time and turnaround time dictionaries by process ID
 sorted_fcfs_wait_time = dict(sorted(fcfs_wait_time.items()))
 sorted_fcfs_turnaround_time = dict(sorted(fcfs_turnaround_time.items()))
 
-# Printing wait time and turnaround time for FCFS
-print("| Process | Avg. Wait Time | Avg. Turnaround Time |")
+# Printing wait time and turnaround time for each process in FCFS
+print("| Process |    Wait Time   |    Turnaround Time   |")
 print("---------------------------------------------------")
 for process_id in sorted_fcfs_wait_time.keys():
     wait = fcfs_wait_time[process_id]
     turnaround = fcfs_turnaround_time[process_id]
     print(f"| P{process_id:<6} | {wait:<11} ms | {turnaround:<17} ms |")
+print("---------------------------------------------------")
+
+# Printing average wait time and average turnaround time for FCFS
+print(f"Average Wait Time: {calculate_avg_wait_time(fcfs_gantt)} ms")
+print(f"Average Turnaround Time: {calculate_avg_turnaround_time(fcfs_gantt)} ms")
 
 print("***************************************************\n")
 
@@ -217,22 +214,28 @@ for process_id, start_time, end_time, arrival_time, burst in srtf_gantt:
 print("---------------------------------------------------")
 
 # Calculating wait time and turnaround time for SRTF
-srtf_wait_time = calculate_avg_wait_time(srtf_gantt)
-srtf_turnaround_time = calculate_avg_turnaround_time(srtf_gantt)
+srtf_wait_time = calculate_wait_time(srtf_gantt)
+srtf_turnaround_time = calculate_turnaround_time(srtf_gantt)
 
 # Sorting the wait time and turnaround time dictionaries by process ID
 sorted_srtf_wait_time = dict(sorted(srtf_wait_time.items()))
 sorted_srtf_turnaround_time = dict(sorted(srtf_turnaround_time.items()))
 
 # Printing wait time and turnaround time for SRTF
-print("| Process | Avg. Wait Time | Avg. Turnaround Time |")
+print("| Process |    Wait Time   |    Turnaround Time   |")
 print("---------------------------------------------------")
 for process_id in sorted_srtf_wait_time.keys():
     wait = srtf_wait_time[process_id]
     turnaround = srtf_turnaround_time[process_id]
     print(f"| P{process_id:<6} | {wait:<11} ms | {turnaround:<17} ms |")
 
+# Printing average wait time and average turnaround time for SRTF
+print(f"Average Wait Time: {calculate_avg_wait_time(srtf_gantt)} ms")
+print(f"Average Turnaround Time: {calculate_avg_turnaround_time(srtf_gantt)} ms")
+
 print("***************************************************\n")
+
+
 
 ###############################################################
 # ROUND ROBIN
@@ -284,19 +287,23 @@ for process_id, start_time, end_time, arrival_time, burst in round_robin_gantt:
 print("---------------------------------------------------")
 
 # Calculating wait time and turnaround time for Round Robin
-rr_wait_time = calculate_avg_wait_time(round_robin_gantt)
-rr_turnaround_time = calculate_avg_turnaround_time(round_robin_gantt)
+rr_wait_time = calculate_wait_time(round_robin_gantt)
+rr_turnaround_time = calculate_turnaround_time(round_robin_gantt)
 
 # Sorting the wait time and turnaround time dictionaries by process ID
 sorted_rr_wait_time = dict(sorted(rr_wait_time.items()))
 sorted_rr_turnaround_time = dict(sorted(rr_turnaround_time.items()))
 
-# Printing wait time and turnaround time for FCFS
-print("| Process | Avg. Wait Time | Avg. Turnaround Time |")
+# Printing wait time and turnaround time for Round Robin
+print("| Process |    Wait Time   |    Turnaround Time   |")
 print("---------------------------------------------------")
 for process_id in sorted_srtf_wait_time.keys():
     wait = rr_wait_time[process_id]
     turnaround = rr_turnaround_time[process_id]
     print(f"| P{process_id:<6} | {wait:<11} ms | {turnaround:<17} ms |")
+
+# Printing average wait time and average turnaround time for Round Robin
+print(f"Average Wait Time: {calculate_avg_wait_time(round_robin_gantt)} ms")
+print(f"Average Turnaround Time: {calculate_avg_turnaround_time(round_robin_gantt)} ms")
 
 print("***************************************************\n")
