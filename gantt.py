@@ -145,7 +145,7 @@ sorted_fcfs_turnaround_time = dict(sorted(fcfs_turnaround_time.items()))
 # Printing wait time and turnaround time for FCFS
 print("| Process | Avg. Wait Time | Avg. Turnaround Time |")
 print("---------------------------------------------------")
-for process_id in fcfs_wait_time.keys():
+for process_id in sorted_fcfs_wait_time.keys():
     wait = fcfs_wait_time[process_id]
     turnaround = fcfs_turnaround_time[process_id]
     print(f"| P{process_id:<6} | {wait:<11} ms | {turnaround:<17} ms |")
@@ -227,7 +227,7 @@ sorted_srtf_turnaround_time = dict(sorted(srtf_turnaround_time.items()))
 # Printing wait time and turnaround time for SRTF
 print("| Process | Avg. Wait Time | Avg. Turnaround Time |")
 print("---------------------------------------------------")
-for process_id in srtf_wait_time.keys():
+for process_id in sorted_srtf_wait_time.keys():
     wait = srtf_wait_time[process_id]
     turnaround = srtf_turnaround_time[process_id]
     print(f"| P{process_id:<6} | {wait:<11} ms | {turnaround:<17} ms |")
@@ -294,7 +294,7 @@ sorted_rr_turnaround_time = dict(sorted(rr_turnaround_time.items()))
 # Printing wait time and turnaround time for FCFS
 print("| Process | Avg. Wait Time | Avg. Turnaround Time |")
 print("---------------------------------------------------")
-for process_id in srtf_wait_time.keys():
+for process_id in sorted_srtf_wait_time.keys():
     wait = rr_wait_time[process_id]
     turnaround = rr_turnaround_time[process_id]
     print(f"| P{process_id:<6} | {wait:<11} ms | {turnaround:<17} ms |")
