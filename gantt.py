@@ -55,6 +55,7 @@ def calculate_avg_wait_time(gantt_chart):
     :param gantt_chart: A list of 10 tuples containing the process id, process arrival time, start time, end time, and remaining burst time
     :return: The average wait time of the gantt chart as an integer
     '''
+    #TODO: verify that this works properly
     total_wait_time = sum(max(start_time - arrival_time, 0) for _, start_time, _, arrival_time, _ in gantt_chart)
     return total_wait_time // 10
 
@@ -66,6 +67,7 @@ def calculate_avg_turnaround_time(gantt_chart):
     :param gantt_chart: A list of 10 tuples containing the process id, process arrival time, start time, end time, and remaining burst time
     :return: The average turnaround time of the gantt chart as an integer
     '''
+    #TODO: verify that this works properly
     total_turnaround_time = sum(end_time - start_time for _, start_time, end_time, _, _ in gantt_chart)
     return total_turnaround_time // 10
 
