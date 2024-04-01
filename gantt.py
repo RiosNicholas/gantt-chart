@@ -72,7 +72,6 @@ def create_srtf_gantt(processes):
     curr_time = 0
     remaining_processes = list(processes)
 
-    #FIXME: remove single increments in output where not necessary. end time should only change when a process completes or if a shorter remaining time process arrives
     while remaining_processes:
         available_processes = [process for process in remaining_processes if process.arrival_time <= curr_time]
 
@@ -87,7 +86,14 @@ def create_srtf_gantt(processes):
         end_time = curr_time + 1
         remaining_burst = shortest_process.burst - 1
 
-        gantt_chart.append((shortest_process.id, start_time, end_time, shortest_process.arrival_time, remaining_burst))
+        # Checking if current short process has the same id as the previous one to group them in the same row 
+        if gantt_chart and gantt_chart[-1][0] == shortest_process.id:
+            # If the last gantt_chart entry has the same id as the current shortest_process, mutate the end time and remaining burst time
+            gantt_chart[-1] = (gantt_chart[-1][0], gantt_chart[-1][1], end_time, gantt_chart[-1][3], remaining_burst)
+        else:
+            # If the current shortest_process.id is different from the last one, append the new process to the Gantt chart
+            gantt_chart.append((shortest_process.id, start_time, end_time, shortest_process.arrival_time, remaining_burst))
+
 
         # Updating the current time and remaining burst time of the currently shortest process
         curr_time = end_time
